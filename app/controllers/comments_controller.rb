@@ -1,5 +1,43 @@
 class CommentsController < ApplicationController
 
+before_action :is_commenter?, only: [:edit, :update]
+
+  def upvote
+    user = current_user
+    if user
+      @vote = Vote.new
+      @vote.value = 1
+      @vote.voter_id = user.id
+      @vote.votable_id = params[:comment_id]
+      @vote.votable_type = "Comment"
+      if @vote.save
+        redirect_to comment_url(params[:comment_id])
+      else
+        redirect_to subs_url
+      end
+    else
+      redirect_to new_session_url
+    end
+  end
+
+  def downvote
+    user = current_user
+    if user
+      @vote = Vote.new
+      @vote.value = -1
+      @vote.voter_id = user.id
+      @vote.votable_id = params[:comment_id]
+      @vote.votable_type = "Comment"
+      if @vote.save
+        redirect_to comment_url(params[:comment_id])
+      else
+        redirect_to subs_url
+      end
+    else
+      redirect_to new_session_url
+    end
+  end
+
   def new
     @comment = Comment.new
     @post = Post.find(params[:post_id])
@@ -39,10 +77,18 @@ class CommentsController < ApplicationController
   end
 
   def edit
+    @comment = Comment.find(params[:id])
+    @post = Post.find(@comment.post_id)
+    render :edit
   end
 
   def update
-
+    @comment = Comment.find(params[:id])
+    if @comment.update(comment_params)
+      redirect_to comment_url(@comment)
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -55,4 +101,7 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:content, :post_id, :parent_comment_id)
   end
 
+  def is_commenter?
+    current_user.id == Comment.find(params[:id]).commenter_id
+  end
 end

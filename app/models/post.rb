@@ -14,6 +14,24 @@ class Post<ActiveRecord::Base
     :primary_key => :id
     )
 
+  has_many :votes, as: :votable
+
+  def score
+    self.votes.sum(:value)
+  end
+
+  def hotness
+    total = 0
+    self.votes.each do |vote|
+      if vote.created_at > 5.minutes.ago
+        vote.value *= 5
+      elsif vote.created_at > 30.minutes.ago
+        vote.value *= 2
+      end
+    total += vote.value
+    end
+    total
+  end
 
     def top_level_comments
       self.comments.where(parent_comment_id: nil)

@@ -6,6 +6,7 @@
   <% unless @all_comments[nil].nil? %>
 
     <% @all_comments[nil].each do |comment| %>
+    <% @all_comments[nil].sort! {|c1, c2|  c2.score <=> c1.score} %>
     <li>
       <%= render "comment", comment: comment %>
     </li>

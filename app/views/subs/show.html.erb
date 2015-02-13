@@ -1,1 +1,16 @@
 <h1> <%= @sub.title %> </h1>
+<ul>
+  <% @posts.sort! {|c1, c2|  c2.score <=> c1.score} %>
+<% @posts.each do |post| %>
+  <li>
+    <a href="<%= post_upvote_url(post.id) %> ">Upvote</a>
+    Score: <%= post.score %>
+    <a href="<%= post_downvote_url(post.id) %> ">Downvote</a>
+    <% if post.url.blank? %>
+      <a href="<%= post_url(post) %>"><%= post.title %></a>
+      <% else %>
+      <a href="<%= post.url%>"><%= post.title %></a>
+    <% end %>
+  </li>
+<% end %>
+</ul>

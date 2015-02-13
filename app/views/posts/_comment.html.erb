@@ -1,9 +1,14 @@
 
+<a href="<%= comment_upvote_url(comment.id) %> ">Upvote</a>
+Score: <%= comment.score %>
+<a href="<%= comment_downvote_url(comment.id) %> ">Downvote</a>
 
   <a href="<%= comment_url(comment) %>"> <%= comment.content %> </a>
   <%= comment.commenter.username %>
 
 <% unless @all_comments[comment.id].nil? %>
+  <% @all_comments[comment.id].sort! {|c1, c2|  c2.score <=> c1.score} %>
+
 <% @all_comments[comment.id].each do |child| %>
   <br>
 <%= render "comment", comment: child %>

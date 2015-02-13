@@ -1,6 +1,42 @@
 class PostsController < ApplicationController
   before_action :is_author?, only: [:edit, :update]
 
+  def upvote
+    user = current_user
+    if user
+      @vote = Vote.new
+      @vote.value = 1
+      @vote.voter_id = user.id
+      @vote.votable_id = params[:post_id]
+      @vote.votable_type = "Post"
+      if @vote.save
+        redirect_to post_url(params[:post_id])
+      else
+        redirect_to subs_url
+      end
+    else
+      redirect_to new_session_url
+    end
+  end
+
+  def downvote
+    user = current_user
+    if user
+      @vote = Vote.new
+      @vote.value = -1
+      @vote.voter_id = user.id
+      @vote.votable_id = params[:post_id]
+      @vote.votable_type = "Post"
+      if @vote.save
+        redirect_to post_url(params[:post_id])
+      else
+        redirect_to subs_url
+      end
+    else
+      redirect_to new_session_url
+    end
+  end
+
   def show
     @post = Post.find(params[:id])
     @all_comments = @post.comments_by_parent_id
