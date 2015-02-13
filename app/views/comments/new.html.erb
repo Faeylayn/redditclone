@@ -1,0 +1,23 @@
+<h1> CREATE COMMENT </h1>
+
+<form action="<%=comments_url%>" method="POST">
+  <input type="hidden"
+        name="authenticity_token"
+        value="<%= form_authenticity_token %>">
+  <input type="hidden" name="comment[post_id]" value="<%= @post.id %>">
+<% unless @parent.nil? %>
+  <input type="hidden" name="comment[parent_comment_id]" value="<%= @parent.id %>">
+  <% end %>
+
+
+
+<label> content
+<textarea name="comment[content]"><%= @comment.content %></textarea>
+</label>
+<br>
+
+
+
+<input type="submit" value="CREATE COMMENT!">
+
+</form>

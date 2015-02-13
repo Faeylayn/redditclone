@@ -3,6 +3,7 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+    @all_comments = @post.comments_by_parent_id
     render :show
   end
 
@@ -41,7 +42,7 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
-    @sub = Sub.find(@post.sub_id)
+    @subs = Sub.all
     if @post.update(post_params)
       redirect_to post_url(@post)
     else

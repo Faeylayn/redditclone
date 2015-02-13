@@ -1,0 +1,10 @@
+<ul>
+<li>
+  <%= @comment.content %>
+</li>
+<li>
+  <%= @comment.commenter.username %>
+</li>
+</ul>
+
+<a href=" <%= comment_comments_new_url(@comment.id) %> "> reply to this comment </a>

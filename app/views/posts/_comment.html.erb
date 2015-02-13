@@ -1,0 +1,12 @@
+
+
+  <a href="<%= comment_url(comment) %>"> <%= comment.content %> </a>
+  <%= comment.commenter.username %>
+
+<% unless @all_comments[comment.id].nil? %>
+<% @all_comments[comment.id].each do |child| %>
+  <br>
+<%= render "comment", comment: child %>
+  <br>
+<% end %>
+<% end %>
