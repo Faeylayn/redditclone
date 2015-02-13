@@ -1,6 +1,7 @@
-<h1> CREATE SUB </h1>
+<h1> EDIT SUB </h1>
 
-<form action="<%=subs_url%>" method="POST">
+<form action="<%=sub_url(@sub)%>" method="POST">
+  <input type="hidden" name="_method" value="patch">
   <input type="hidden"
         name="authenticity_token"
         value="<%= form_authenticity_token %>">
@@ -15,6 +16,6 @@
 <br>
 
 
-<input type="submit" value="CREATE SUB!">
+<input type="submit" value="Edit SUB!">
 
 </form>
